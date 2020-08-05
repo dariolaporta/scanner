@@ -1,3 +1,7 @@
 .epcs.pyc
 .vscode/
 /__pycache__/*
+/build/*
+/dist/*
+/scanner.spec
+/.python-version
