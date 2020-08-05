@@ -1,16 +1,25 @@
 import os
 import glob
-import epcs
+# import epcs
+import importlib
 
 
 def main():
-    directory_path = raw_input("Enter the directory path: ")
-    filename = raw_input("Insert list of epcs: ")
+    directory_path = raw_input("ENTER DIRECTORY PATH: ")
+    filename = raw_input("ENTER LIST OF EPCS: ")
     epcList = filename.split()
     # print("epc list is ", epcList)
     # filename = raw_input("Choose a name of the file to extract: ")
     scan(directory_path, filename, epcList)
-    print('operation completed')
+    repeat()
+
+
+def repeat():
+    repeatOp = raw_input("REPEAT OPERATION ? Y/N ")
+    if repeatOp == 'Y':
+        main()
+    else:
+        print('operation completed')
 
 
 def scan(directory_path, name, epcList):
