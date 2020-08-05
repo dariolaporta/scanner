@@ -1,1 +1,3 @@
-./epcs.pyc
+.epcs.pyc
+.vscode/
+.__pycache__/
