@@ -1,32 +1,50 @@
 import os
 import glob
-import epcs
 import importlib
 
 
 def main():
-    directory_path = input("ENTER DIRECTORY PATH: ")
-    filename = input("ENTER EPCS MANUALLY: ")
-    fileExtension = input("ENTER FILE EXTENSION (eg: .txt): ")
-    epcList = filename.split()
-    if epcList == []:
-        scan(directory_path, fileExtension)
-        repeat()
+    directory_path = input("Enter directory path of the files to scan *: ")
+    itemsManuallyInsert = input(
+        "Enter epcs manually (press ENTER if you want to skip): ")
+    itemsList = itemsManuallyInsert.split()
+    if len(itemsList) > 0:
+        fileExtension = input("Filter scanning by file extension (eg: .txt): ")
+        scanItems(directory_path, itemsList, fileExtension)
     else:
-        scanEpcs(directory_path, epcList, fileExtension)
-        repeat()
+        listOfItemsPath = input(
+            "Enter path of the file with the list of epcs*: ")
+        fileExtension = input(
+            "Filter scanning by file extension (eg: .txt)*: ")
+        items = listOfItemsToScan(listOfItemsPath)
+        scanItems(directory_path, items, fileExtension)
+    print('Operation Completed')
+    repeat()
 
 
-def scanEpcs(directory_path, epcList, fileExtension):
+def listOfItemsToScan(path):
+    arr = []
+    with open(path) as file:
+        line_count = 0
+        for row in file:
+            line_count += 1
+            arr.append(row.strip())
+    return arr
+
+
+def scanItems(directory_path, epcList, fileExtension):
+    print('scanning...')
     try:
         files = glob.glob(directory_path + '/**/*' +
                           fileExtension, recursive=True)
+        line_count = 0
         for filename in files:
             path = filename
             for item in epcList:
                 with open(path, 'rb') as f:
+                    line_count += 1
                     if item in f.read().decode(errors='replace'):
-                        print(item + " - " + filename + " ")
+                        print(item + " - " + filename)
                         f.close()
     except:
         print("Something went wrong")
@@ -37,22 +55,7 @@ def repeat():
     if repeatOp == 'y':
         main()
     else:
-        print('operation completed')
-
-
-def scan(directory_path, fileExtension):
-    try:
-        files = glob.glob(directory_path + '/**/*' +
-                          fileExtension, recursive=True)
-        for filename in files:
-            path = filename
-            for item in epcs.epcsList:
-                with open(path, 'rb') as f:
-                    if item in f.read().decode(errors='replace'):
-                        print(item + " - " + filename + " ")
-                        f.close()
-    except:
-        print("Something went wrong")
+        print('Process terminated')
 
 
 if __name__ == '__main__':
