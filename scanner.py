@@ -8,6 +8,12 @@ def main():
     itemsManuallyInsert = input(
         "Enter epcs manually (press ENTER if you want to skip): ")
     itemsList = itemsManuallyInsert.split()
+    checkItemsLenght(itemsList, directory_path)
+    print('Operation Completed')
+    repeat()
+
+
+def checkItemsLenght(itemsList, directory_path):
     if len(itemsList) > 0:
         fileExtension = input("Filter scanning by file extension (eg: .txt): ")
         scanItems(directory_path, itemsList, fileExtension)
@@ -18,8 +24,6 @@ def main():
             "Filter scanning by file extension (eg: .txt)*: ")
         items = listOfItemsToScan(listOfItemsPath)
         scanItems(directory_path, items, fileExtension)
-    print('Operation Completed')
-    repeat()
 
 
 def listOfItemsToScan(path):
