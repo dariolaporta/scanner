@@ -6,7 +6,7 @@ import importlib
 def main():
     directory_path = input("Enter directory path of the files to scan *: ")
     itemsManuallyInsert = input(
-        "Enter epcs manually (press ENTER if you want to skip): ")
+        "Enter items to search (eg: Hello world! , or press ENTER if you want to skip): ")
     itemsList = itemsManuallyInsert.split()
     checkItemsLenght(itemsList, directory_path)
     print('Operation Completed')
@@ -19,9 +19,9 @@ def checkItemsLenght(itemsList, directory_path):
         scanItems(directory_path, itemsList, fileExtension)
     else:
         listOfItemsPath = input(
-            "Enter path of the file with the list of epcs*: ")
+            "Enter a path of a file with a list of elements you want to search*: ")
         fileExtension = input(
-            "Filter scanning by file extension (eg: .txt)*: ")
+            "Choose the format of the files to scan (eg: .txt, .csv ...)*: ")
         items = listOfItemsToScan(listOfItemsPath)
         scanItems(directory_path, items, fileExtension)
 
