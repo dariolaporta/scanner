@@ -2,6 +2,8 @@ import os
 import glob
 import importlib
 
+items = []
+
 
 def main():
     directory_path = input("Enter directory path of the files to scan *: ")
@@ -15,14 +17,15 @@ def main():
 def checkItemsLenght(itemsList, directory_path):
     if len(itemsList) > 0:
         fileExtension = input("Filter scanning by file extension (eg: .txt): ")
-        scanItems(directory_path, itemsList, fileExtension)
+        items = itemsList
     else:
         listOfItemsPath = input(
             "Enter a path of a file with a list of elements you want to search*: ")
         fileExtension = input(
             "Choose the format of the files to scan (eg: .txt, .csv ...)*: ")
         items = listOfItemsToScan(listOfItemsPath)
-        scanItems(directory_path, items, fileExtension)
+
+    scanItems(directory_path, items, fileExtension)
 
 
 def listOfItemsToScan(path):
@@ -49,8 +52,6 @@ def scanItems(directory_path, epcList, fileExtension):
                         f.close()
     except:
         print("Operation Aborted")
-    finally:
-        print('Operation Completed')
 
 
 def repeat():
