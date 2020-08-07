@@ -29,6 +29,14 @@ def checkItemsLenght(itemsList, directory_path):
 
 
 def listOfItemsToScan(path):
+    # TODO replace
+    # try:
+    # myfile = open("myfile.csv", "r+") # or "a+", whatever you need
+    # except IOError:
+    # print "Could not open file! Please close Excel!"
+
+    # with myfile:
+    # do_stuff()
     arr = []
     try:
         with open(path) as file:
@@ -40,6 +48,14 @@ def listOfItemsToScan(path):
 
 
 def scanItems(directory_path, epcList, fileExtension):
+    # TODO replace
+    # try:
+    # myfile = open("myfile.csv", "r+") # or "a+", whatever you need
+    # except IOError:
+    # print "Could not open file! Please close Excel!"
+
+    # with myfile:
+    # do_stuff()
     try:
         files = glob.glob(directory_path + '/**/*' +
                           fileExtension, recursive=True)
