@@ -29,9 +29,7 @@ def checkItemsLenght(itemsList, directory_path):
 def listOfItemsToScan(path):
     arr = []
     with open(path) as file:
-        line_count = 0
         for row in file:
-            line_count += 1
             arr.append(row.strip())
     return arr
 
@@ -41,14 +39,12 @@ def scanItems(directory_path, epcList, fileExtension):
     try:
         files = glob.glob(directory_path + '/**/*' +
                           fileExtension, recursive=True)
-        line_count = 0
         for filename in files:
             path = filename
             for item in epcList:
                 with open(path, 'rb') as f:
-                    line_count += 1
                     if item in f.read().decode(errors='replace'):
-                        print(item + " - " + filename)
+                        print("Search for: " + item + " - Path: " + filename)
                         f.close()
     except:
         print("Something went wrong")
