@@ -9,7 +9,6 @@ def main():
         "Enter items to search (eg: Hello world! , or press ENTER if you want to skip): ")
     itemsList = itemsManuallyInsert.split()
     checkItemsLenght(itemsList, directory_path)
-    print('Operation Completed')
     repeat()
 
 
@@ -28,14 +27,16 @@ def checkItemsLenght(itemsList, directory_path):
 
 def listOfItemsToScan(path):
     arr = []
-    with open(path) as file:
-        for row in file:
-            arr.append(row.strip())
-    return arr
+    try:
+        with open(path) as file:
+            for row in file:
+                arr.append(row.strip())
+        return arr
+    except:
+        print('file not found - please make sure you specified a correct file path')
 
 
 def scanItems(directory_path, epcList, fileExtension):
-    print('scanning...')
     try:
         files = glob.glob(directory_path + '/**/*' +
                           fileExtension, recursive=True)
@@ -47,7 +48,9 @@ def scanItems(directory_path, epcList, fileExtension):
                         print("Search for: " + item + " - Path: " + filename)
                         f.close()
     except:
-        print("Something went wrong")
+        print("Operation Aborted")
+    finally:
+        print('Operation Completed')
 
 
 def repeat():
