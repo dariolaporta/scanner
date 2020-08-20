@@ -1,2 +1,3 @@
 # scanner
-Python script for executing file search
+
+Python script for executing file search inside directories

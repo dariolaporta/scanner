@@ -2,81 +2,55 @@ import os
 import glob
 import importlib
 
-items = []
 
+class Scanner:
+    def __init__(self, items, directory):
+        self.items = items
+        self.directory = directory
 
-def main():
-    directory_path = input("Enter directory path of the files to scan *: ")
-    itemsManuallyInsert = input(
-        "Enter items to search (eg: Hello world! , or press ENTER if you want to skip): ")
-    itemsList = itemsManuallyInsert.split()
-    checkItemsLenght(itemsList, directory_path)
-    repeat()
+    # Check collected items lenght
+    def checkItemsLenght(self):
+        if len(self.items) > 0:
+            fileExtension = input(
+                "Filter scanning by file extension (eg: .txt): ")
+        else:
+            listOfItemsPath = input(
+                "Enter a path of a file with a list of elements you want to search*: ")
+            fileExtension = input(
+                "Choose the format of the files to scan (eg: .txt, .csv ...)*: ")
+            self.items = self.listOfItemsToScan(listOfItemsPath)
 
+        self.scanItems(fileExtension)
 
-def checkItemsLenght(itemsList, directory_path):
-    if len(itemsList) > 0:
-        fileExtension = input("Filter scanning by file extension (eg: .txt): ")
-        items = itemsList
-    else:
-        listOfItemsPath = input(
-            "Enter a path of a file with a list of elements you want to search*: ")
-        fileExtension = input(
-            "Choose the format of the files to scan (eg: .txt, .csv ...)*: ")
-        items = listOfItemsToScan(listOfItemsPath)
+    # Scan collected items
+    def scanItems(self, fileExtension):
+        # Adding a nice banner
+        print('-' * 100)
+        print('SCANNING FILES ... Please wait')
+        print('-' * 100)
+        try:
+            files = glob.glob(self.directory + '/**/*' +
+                              fileExtension, recursive=True)
+            for filename in files:
+                path = filename
+                for item in self.items:
+                    with open(path, 'rb') as f:
+                        if item in f.read().decode(errors='replace'):
+                            print("FOUND: " + item +
+                                  " AT PATH: " + filename)
+                            f.close()
+        except:
+            print("Operation Aborted")
 
-    scanItems(directory_path, items, fileExtension)
-
-
-def listOfItemsToScan(path):
-    # TODO replace
-    # try:
-    # myfile = open("myfile.csv", "r+") # or "a+", whatever you need
-    # except IOError:
-    # print "Could not open file! Please close Excel!"
-
-    # with myfile:
-    # do_stuff()
-    arr = []
-    try:
-        with open(path) as file:
-            for row in file:
-                arr.append(row.strip())
-        return arr
-    except:
-        print('file not found - please make sure you specified a correct file path')
-
-
-def scanItems(directory_path, epcList, fileExtension):
-    # TODO replace
-    # try:
-    # myfile = open("myfile.csv", "r+") # or "a+", whatever you need
-    # except IOError:
-    # print "Could not open file! Please close Excel!"
-
-    # with myfile:
-    # do_stuff()
-    try:
-        files = glob.glob(directory_path + '/**/*' +
-                          fileExtension, recursive=True)
-        for filename in files:
-            path = filename
-            for item in epcList:
-                with open(path, 'rb') as f:
-                    if item in f.read().decode(errors='replace'):
-                        print("Search for: " + item + " - Path: " + filename)
-                        f.close()
-    except:
-        print("Operation Aborted")
-
-
-def repeat():
-    repeatOp = input("REPEAT OPERATION ? y/n ")
-    if repeatOp == 'y':
-        main()
-    else:
-        print('Process terminated')
-
-
-if __name__ == '__main__':
-    main()
+    # In case the list of item was uploaded by a file
+    # Appends each read line of the file in an Array and then returns it.
+    def listOfItemsToScan(self, path):
+        arr = []
+        try:
+            with open(path) as file:
+                for row in file:
+                    arr.append(row.strip())
+            return arr
+        except:
+            print(
+                'file not found - please make sure you specified a correct file path')
