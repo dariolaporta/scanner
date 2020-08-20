@@ -6,18 +6,24 @@ from scanner import Scanner
 import pyfiglet
 
 
+def ascii_banner(banner):
+    element = pyfiglet.figlet_format(banner)
+    print(element)
+
 # It collects infos ( directory , items ) typed by the users and then check items lenght
+
+
 def run():
     try:
         os.system('clear')
-        ascii_banner = pyfiglet.figlet_format("FILE   SCANNER")
-        print(ascii_banner)
+        ascii_banner("FILE   SCANNER")
         directory_path = input("Enter directory path of the files to scan *: ")
         itemsManuallyInsert = input(
             "Enter items to search (eg: Hello world! , or press ENTER if you want to skip): ")
         itemsList = itemsManuallyInsert.split()
         _scan = Scanner(itemsList, directory_path)
         _scan.checkItemsLenght()
+        ascii_banner("Completed")
         repeat()
     # If user types CTRL + C takes an exception and exits the program
     except KeyboardInterrupt as error:
