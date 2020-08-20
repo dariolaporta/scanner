@@ -9,6 +9,8 @@ class Scanner:
         self.directory = directory
 
     # Check collected items lenght
+    # If items.lenght > 0 the list has been manually typed
+    # If the opposite occours , the list was uploaded from a file
     def checkItemsLenght(self):
         if len(self.items) > 0:
             fileExtension = input(
