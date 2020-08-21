@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import glob
 import importlib
@@ -15,7 +16,7 @@ def ascii_banner(banner):
 def run():
     try:
         os.system('clear')
-        ascii_banner("FILE   SCANNER")
+        ascii_banner("File -  Scanner")
         directory_path = input("Enter directory path of the files to scan *: ")
         itemsManuallyInsert = input(
             "Enter items to search (eg: Hello world! , or press ENTER if you want to skip): ")
@@ -25,7 +26,7 @@ def run():
         ascii_banner("Completed")
         repeat()
     # If user types CTRL + C takes an exception and exits the program
-    except KeyboardInterrupt as error:
+    except KeyboardInterrupt:
         print("\nExiting Program !!!!")
         sys.exit()
 
