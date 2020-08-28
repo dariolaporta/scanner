@@ -43,9 +43,9 @@ class Scanner:
     # Scan collected items
     def scanItems(self, fileExtension):
         # Adding a nice banner
-        print('-' * 100)
+        print('')
         print('SCANNING FILES ... Please wait')
-        print('-' * 100)
+        print('')
 
         try:
             files = glob.glob(self.directory + '/**/*' +
@@ -56,8 +56,14 @@ class Scanner:
                     with open(path) as myFile:
                         for num, line in enumerate(myFile, 1):
                             if item in line:
-                                print(item, 'found at line:',
-                                      num, 'file:', path)
+                                print('-' * 100)
+                                print('ELEMENT: ', item)
+                                print('-' * 100)
+                                print('')
+                                print('FOUND AT LINE:',
+                                      num, ',', 'FILE:', path)
+                                print('')
+                                print(line)
             self.ascii_banner("Completed")
         except Exception as e:
             print("Operation Aborted: ", e)
