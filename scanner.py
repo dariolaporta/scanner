@@ -46,20 +46,21 @@ class Scanner:
         print('-' * 100)
         print('SCANNING FILES ... Please wait')
         print('-' * 100)
+
         try:
             files = glob.glob(self.directory + '/**/*' +
                               fileExtension, recursive=True)
             for filename in files:
                 path = filename
                 for item in self.items:
-                    with open(path, 'rb') as f:
-                        if item in f.read().decode(errors='replace'):
-                            print("FOUND: " + item +
-                                  " AT PATH: " + filename)
-                            f.close()
-        except:
-            print("Operation Aborted")
-        self.ascii_banner("Completed")
+                    with open(path) as myFile:
+                        for num, line in enumerate(myFile, 1):
+                            if item in line:
+                                print(item, 'found at line:',
+                                      num, 'file:', path)
+            self.ascii_banner("Completed")
+        except Exception as e:
+            print("Operation Aborted: ", e)
 
     # In case the list of item was uploaded by a file
     # Appends each read line of the file in an Array and then returns it.
