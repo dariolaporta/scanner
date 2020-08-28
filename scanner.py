@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import os
+from os import path
 import glob
+import pyfiglet
 import importlib
 
 
@@ -9,21 +11,34 @@ class Scanner:
         self.items = items
         self.directory = directory
 
+    def ascii_banner(self, banner):
+        element = pyfiglet.figlet_format(banner)
+        print(element)
     # Check collected items lenght
     # If items.lenght > 0 the list has been manually typed
     # If the opposite occours , the list was uploaded from a file
-    def checkItemsLenght(self):
-        if len(self.items) > 0:
-            fileExtension = input(
-                "Filter scanning by file extension (eg: .txt): ")
-        else:
-            listOfItemsPath = input(
-                "Enter a path of a file with a list of elements you want to search*: ")
-            fileExtension = input(
-                "Choose the format of the files to scan (eg: .txt, .csv ...)*: ")
-            self.items = self.listOfItemsToScan(listOfItemsPath)
 
-        self.scanItems(fileExtension)
+    def checkItemsLenght(self):
+        try:
+            if len(self.items) > 0:
+                fileExtension = input(
+                    "Filter scanning by file extension (eg: .txt): ")
+            else:
+                listOfItemsPath = input(
+                    "Enter a path of a file with a list of elements you want to search*: ")
+                existing_path = path.exists(listOfItemsPath)
+                if existing_path == False:
+                    raise Exception("Path not valid")
+                fileExtension = input(
+                    "Choose the format of the files to scan (eg: .txt, .csv ...)*: ")
+                if fileExtension.lower().endswith(('.txt', '.csv')) == False:
+                    raise Exception("Not a valid extension")
+                self.items = self.listOfItemsToScan(listOfItemsPath)
+
+            self.scanItems(fileExtension)
+        except Exception as e:
+            print(e)
+            self.checkItemsLenght()
 
     # Scan collected items
     def scanItems(self, fileExtension):
@@ -44,6 +59,7 @@ class Scanner:
                             f.close()
         except:
             print("Operation Aborted")
+        self.ascii_banner("Completed")
 
     # In case the list of item was uploaded by a file
     # Appends each read line of the file in an Array and then returns it.
