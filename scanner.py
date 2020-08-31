@@ -46,8 +46,7 @@ class Scanner:
         print('ELEMENT: ', item)
         print('-' * 100)
         print('')
-        print('FOUND AT LINE:',
-              num, ',', 'FILE:', path)
+        print('FOUND AT LINE:', num, ',', 'FILE:', path)
         print('')
         print(line)
 
