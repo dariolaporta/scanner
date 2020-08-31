@@ -4,6 +4,7 @@ from os import path
 import glob
 import pyfiglet
 import importlib
+import platform
 
 
 class Scanner:
@@ -40,13 +41,23 @@ class Scanner:
             print(e)
             self.checkItemsLenght()
 
+    def compose_response(self, item, num, path, line):
+        print('-' * 100)
+        print('ELEMENT: ', item)
+        print('-' * 100)
+        print('')
+        print('FOUND AT LINE:',
+              num, ',', 'FILE:', path)
+        print('')
+        print(line)
+
     # Scan collected items
     def scanItems(self, fileExtension):
         # Adding a nice banner
         print('')
         print('SCANNING FILES ... Please wait')
         print('')
-
+        is_mac_os = platform.platform().startswith('macOS')
         try:
             files = glob.glob(self.directory + '/**/*' +
                               fileExtension, recursive=True)
@@ -56,15 +67,10 @@ class Scanner:
                     with open(path) as myFile:
                         for num, line in enumerate(myFile, 1):
                             if item in line:
-                                print('-' * 100)
-                                print('ELEMENT: ', item)
-                                print('-' * 100)
-                                print('')
-                                print('FOUND AT LINE:',
-                                      num, ',', 'FILE:', path)
-                                print('')
-                                print(line)
-            self.ascii_banner("Completed")
+                                self.compose_response(item, num, path, line)
+
+            if is_mac_os == True:
+                self.ascii_banner("Completed")
         except Exception as e:
             print("Operation Aborted: ", e)
 
