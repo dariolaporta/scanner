@@ -1,3 +1,3 @@
 # File Scanner
 
-Python script for executing file search inside directories
+A CLI application to perform text search inside files through directories and sub directories
