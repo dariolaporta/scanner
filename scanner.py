@@ -60,18 +60,21 @@ class Scanner:
         try:
             files = glob.glob(self.directory + '/**/*' +
                               fileExtension, recursive=True)
+            found_elements = []
             for filename in files:
                 path = filename
                 for item in self.items:
                     with open(path) as myFile:
                         for num, line in enumerate(myFile, 1):
                             if item in line:
+                                found_elements.append(item)
                                 self.compose_response(item, num, path, line)
 
             if is_mac_os == True:
                 self.ascii_banner("Completed")
             else:
                 print('Completed !!!')
+            print('TOTAL ELEMENTS FOUND:', str(len(found_elements)))
         except Exception as e:
             print("Operation Aborted: ", e)
 
