@@ -61,8 +61,10 @@ class Scanner:
             files = glob.glob(self.directory + '/**/*' +
                               fileExtension, recursive=True)
             found_elements = []
+            scanned_files = []
             for filename in files:
                 path = filename
+                scanned_files.append(path)
                 for item in self.items:
                     with open(path) as myFile:
                         for num, line in enumerate(myFile, 1):
@@ -75,6 +77,7 @@ class Scanner:
             else:
                 print('Completed !!!')
             print('TOTAL ELEMENTS FOUND:', str(len(found_elements)))
+            print('TOTAL FILES SCANNED:', str(len(scanned_files)))
         except Exception as e:
             print("Operation Aborted: ", e)
 

@@ -44,6 +44,7 @@ def run():
 
 # Asks the user to repeat operation or not
 def repeat():
+    print('')
     repeatOp = input("REPEAT OPERATION ? y/n ")
     if repeatOp == 'y':
         run()
