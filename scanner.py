@@ -71,6 +71,8 @@ class Scanner:
 
             if is_mac_os == True:
                 self.ascii_banner("Completed")
+            else:
+                print('Completed !!!')
         except Exception as e:
             print("Operation Aborted: ", e)
 

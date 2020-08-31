@@ -21,6 +21,8 @@ def run():
         if is_mac_os == True:
             os.system('clear')
             ascii_banner("File -  Scanner")
+        else:
+            os.system('cls')
         directory_path = input("Enter directory path of the files to scan *: ")
         existing_path = path.exists(directory_path)
         if existing_path == False:
