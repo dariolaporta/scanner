@@ -5,6 +5,7 @@ import glob
 import pyfiglet
 import importlib
 import platform
+import shutil
 
 
 class Scanner:
@@ -42,6 +43,9 @@ class Scanner:
             self.checkItemsLenght()
 
     def compose_response(self, item, num, path, line):
+        a = path.split("/")
+        file_name = a[-1]
+        dest_path = f'/Users/temera/Desktop/files_to_move/{file_name}'
         print('-' * 100)
         print('ELEMENT: ', item)
         print('-' * 100)
@@ -49,6 +53,7 @@ class Scanner:
         print('FOUND AT LINE:', num, ',', 'FILE:', path)
         print('')
         print(line)
+        shutil.copyfile(path, dest_path)
 
     # Scan collected items
     def scanItems(self, fileExtension):
