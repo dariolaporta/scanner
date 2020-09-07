@@ -51,8 +51,6 @@ class Scanner:
             self.checkItemsLenght()
 
     def compose_response(self, item, num, path, line, name_dir):
-        # name_dir = f'report_{datetime.datetime.now()}_{self.get_random_string(8)}'
-        # os.mkdir(f'./Reports/files/{name_dir}')
         a = path.split("/")
         file_name = a[-1]
         dest_path = f'./Reports/files/{name_dir}/{file_name}'
