@@ -51,9 +51,9 @@ class Scanner:
             self.checkItemsLenght()
 
     def compose_response(self, item, num, path, line, name_dir):
-        a = path.split("/")
-        file_name = a[-1]
-        dest_path = f'./Reports/files/{name_dir}/{file_name}'
+        # a = path.split("/")
+        # file_name = a[-1]
+        # dest_path = f'./Reports/files/{name_dir}/{file_name}'
         print('-' * 100)
         print('ELEMENT: ', item)
         print('-' * 100)
@@ -61,11 +61,21 @@ class Scanner:
         print('FOUND AT LINE:', num, ',', 'FILE:', path)
         print('')
         print(line)
-        shutil.copyfile(path, dest_path)
+        # shutil.copyfile(path, dest_path)
+
+    def get_year_time(self):
+        date = datetime.date.today()
+        time = datetime.datetime.now().strftime("%H:%M:%S")
+        date_conv = str(date)
+        time_conv = str(time)
+        a = date_conv.split('-')
+        b = time_conv.split(':')
+        return f'{"_".join(a)}_{"_".join(b)}'
 
     # Scan collected items
     def scanItems(self, fileExtension):
         # Adding a nice banner
+        self.get_year_time()
         print('')
         print('SCANNING FILES ... Please wait')
         print('')
@@ -77,6 +87,7 @@ class Scanner:
                               fileExtension, recursive=True)
             found_elements = []
             scanned_files = []
+            f = open(f"items_{self.get_year_time()}.csv", "a")
             for filename in files:
                 path = filename
                 scanned_files.append(path)
@@ -87,6 +98,11 @@ class Scanner:
                                 found_elements.append(item)
                                 self.compose_response(
                                     item, num, path, line, name_dir)
+                                f.write(line)
+                                f2 = open(f"report.csv", "a")
+                                f2.write(line)
+                                f2.close()
+            f.close()
 
             if is_mac_os == True:
                 self.ascii_banner("Completed")
