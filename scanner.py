@@ -6,6 +6,9 @@ import pyfiglet
 import importlib
 import platform
 import shutil
+import random
+import string
+import datetime
 
 
 class Scanner:
@@ -19,6 +22,11 @@ class Scanner:
     # Check collected items lenght
     # If items.lenght > 0 the list has been manually typed
     # If the opposite occours , the list was uploaded from a file
+
+    def get_random_string(self, length):
+        letters = string.ascii_lowercase
+        result_str = ''.join(random.choice(letters) for i in range(length))
+        return result_str
 
     def checkItemsLenght(self):
         try:
@@ -42,10 +50,12 @@ class Scanner:
             print(e)
             self.checkItemsLenght()
 
-    def compose_response(self, item, num, path, line):
+    def compose_response(self, item, num, path, line, name_dir):
+        # name_dir = f'report_{datetime.datetime.now()}_{self.get_random_string(8)}'
+        # os.mkdir(f'./Reports/files/{name_dir}')
         a = path.split("/")
         file_name = a[-1]
-        dest_path = f'/Users/temera/Desktop/files_to_move/{file_name}'
+        dest_path = f'./Reports/files/{name_dir}/{file_name}'
         print('-' * 100)
         print('ELEMENT: ', item)
         print('-' * 100)
@@ -61,6 +71,8 @@ class Scanner:
         print('')
         print('SCANNING FILES ... Please wait')
         print('')
+        name_dir = f'report_{datetime.datetime.now()}_{self.get_random_string(8)}'
+        os.mkdir(f'./Reports/files/{name_dir}')
         is_mac_os = platform.platform().startswith('macOS')
         try:
             files = glob.glob(self.directory + '/**/*' +
@@ -75,7 +87,8 @@ class Scanner:
                         for num, line in enumerate(myFile, 1):
                             if item in line:
                                 found_elements.append(item)
-                                self.compose_response(item, num, path, line)
+                                self.compose_response(
+                                    item, num, path, line, name_dir)
 
             if is_mac_os == True:
                 self.ascii_banner("Completed")
