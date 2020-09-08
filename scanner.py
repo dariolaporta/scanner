@@ -45,15 +45,19 @@ class Scanner:
                     raise Exception("Not a valid extension")
                 self.items = self.listOfItemsToScan(listOfItemsPath)
 
-            self.scanItems(fileExtension)
+            file_mv = input(
+                "Would you like to move scanned files in an internal directory? (y/n): ")
+            self.scanItems(fileExtension, file_mv)
         except Exception as e:
             print(e)
             self.checkItemsLenght()
 
-    def compose_response(self, item, num, path, line, name_dir):
-        # a = path.split("/")
-        # file_name = a[-1]
-        # dest_path = f'./Reports/files/{name_dir}/{file_name}'
+    def compose_response(self, item, num, path, line, name_dir, file_mv):
+        if file_mv == 'y':
+            a = path.split("/")
+            file_name = a[-1]
+            dest_path = f'./Reports/{name_dir}/{file_name}'
+            shutil.copyfile(path, dest_path)
         print('-' * 100)
         print('ELEMENT: ', item)
         print('-' * 100)
@@ -61,7 +65,6 @@ class Scanner:
         print('FOUND AT LINE:', num, ',', 'FILE:', path)
         print('')
         print(line)
-        # shutil.copyfile(path, dest_path)
 
     def get_year_time(self):
         date = datetime.date.today()
@@ -73,21 +76,23 @@ class Scanner:
         return f'{"_".join(a)}_{"_".join(b)}'
 
     # Scan collected items
-    def scanItems(self, fileExtension):
+    def scanItems(self, fileExtension, file_mv):
         # Adding a nice banner
+        os.remove("report_backup.csv")
         self.get_year_time()
         print('')
         print('SCANNING FILES ... Please wait')
         print('')
         name_dir = f'report_{datetime.datetime.now()}_{self.get_random_string(8)}'
-        os.mkdir(f'./Reports/files/{name_dir}')
+        if file_mv == 'y':
+            os.mkdir(f'./Reports/{name_dir}')
         is_mac_os = platform.platform().startswith('macOS')
         try:
             files = glob.glob(self.directory + '/**/*' +
                               fileExtension, recursive=True)
             found_elements = []
             scanned_files = []
-            f = open(f"items_{self.get_year_time()}.csv", "a")
+            f = open(f"./Reports/items_{self.get_year_time()}.csv", "a")
             for filename in files:
                 path = filename
                 scanned_files.append(path)
@@ -97,9 +102,9 @@ class Scanner:
                             if item in line:
                                 found_elements.append(item)
                                 self.compose_response(
-                                    item, num, path, line, name_dir)
+                                    item, num, path, line, name_dir, file_mv)
                                 f.write(line)
-                                f2 = open(f"report.csv", "a")
+                                f2 = open(f"report_backup.csv", "a")
                                 f2.write(line)
                                 f2.close()
             f.close()

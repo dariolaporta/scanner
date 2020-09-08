@@ -12,3 +12,6 @@ ssh
 /Prova/*
 /to_check.txt
 /epcs.txt
+/report.csv
+/report_backup.csv
+
