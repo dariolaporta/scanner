@@ -78,7 +78,8 @@ class Scanner:
     # Scan collected items
     def scanItems(self, fileExtension, file_mv):
         # Adding a nice banner
-        os.remove("report_backup.csv")
+        with open("report_backup.csv", 'w'):
+            pass
         self.get_year_time()
         print('')
         print('SCANNING FILES ... Please wait')
