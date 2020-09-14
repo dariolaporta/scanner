@@ -65,6 +65,7 @@ class Scanner:
             for filename in files:
                 self.path_file_found = filename
                 self.scanned_files.append(self.path_file_found)
+                # TODO: try to replace the below code with a map(lambda p: myFunc(p, additionalArgument), pages)
                 for item in self.items:
                     self.find_items(item, name_dir, file_mv, f)
             f.close()
