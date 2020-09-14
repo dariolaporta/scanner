@@ -14,14 +14,17 @@ import datetime
 class Scanner:
     def __init__(self, items, directory):
         self.items = items
+        self.found_elements = []
+        self.scanned_files = []
         self.directory = directory
 
     def ascii_banner(self, banner):
-        element = pyfiglet.figlet_format(banner)
-        print(element)
-    # Check collected items lenght
-    # If items.lenght > 0 the list has been manually typed
-    # If the opposite occours , the list was uploaded from a file
+        is_mac_os = platform.platform().startswith('macOS')
+        if is_mac_os == True:
+            element = pyfiglet.figlet_format(banner)
+            print(element)
+        else:
+            print('Completed !!!')
 
     def get_random_string(self, length):
         letters = string.ascii_lowercase
@@ -29,6 +32,9 @@ class Scanner:
         return result_str
 
     def checkItemsLenght(self):
+        # Check collected items lenght
+        # If items.lenght > 0 the list has been manually typed
+        # If the opposite occours , the list was uploaded from a file
         try:
             if len(self.items) > 0:
                 fileExtension = input(
@@ -75,8 +81,20 @@ class Scanner:
         b = time_conv.split(':')
         return f'{"_".join(a)}_{"_".join(b)}'
 
-    # Scan collected items
+    def find_items(self, item, path, name_dir, file_mv, f):
+        with open(path) as myFile:
+            for num, line in enumerate(myFile, 1):
+                if item in line:
+                    self.found_elements.append(item)
+                    self.compose_response(
+                        item, num, path, line, name_dir, file_mv)
+                    f.write(line)
+                    f2 = open(f"report_backup.csv", "a")
+                    f2.write(line)
+                    f2.close()
+
     def scanItems(self, fileExtension, file_mv):
+        # Scan collected items
         # Adding a nice banner
         with open("report_backup.csv", 'w'):
             pass
@@ -87,41 +105,25 @@ class Scanner:
         name_dir = f'report_{datetime.datetime.now()}_{self.get_random_string(8)}'
         if file_mv == 'y':
             os.mkdir(f'./Reports/{name_dir}')
-        is_mac_os = platform.platform().startswith('macOS')
         try:
             files = glob.glob(self.directory + '/**/*' +
                               fileExtension, recursive=True)
-            found_elements = []
-            scanned_files = []
             f = open(f"./Reports/items_{self.get_year_time()}.csv", "a")
             for filename in files:
                 path = filename
-                scanned_files.append(path)
+                self.scanned_files.append(path)
                 for item in self.items:
-                    with open(path) as myFile:
-                        for num, line in enumerate(myFile, 1):
-                            if item in line:
-                                found_elements.append(item)
-                                self.compose_response(
-                                    item, num, path, line, name_dir, file_mv)
-                                f.write(line)
-                                f2 = open(f"report_backup.csv", "a")
-                                f2.write(line)
-                                f2.close()
+                    self.find_items(item, path, name_dir, file_mv, f)
             f.close()
-
-            if is_mac_os == True:
-                self.ascii_banner("Completed")
-            else:
-                print('Completed !!!')
-            print('TOTAL ELEMENTS FOUND:', str(len(found_elements)))
-            print('TOTAL FILES SCANNED:', str(len(scanned_files)))
+            self.ascii_banner("Completed")
+            print('TOTAL ELEMENTS FOUND:', str(len(self.found_elements)))
+            print('TOTAL FILES SCANNED:', str(len(self.scanned_files)))
         except Exception as e:
             print("Operation Aborted: ", e)
 
-    # In case the list of item was uploaded by a file
-    # Appends each read line of the file in an Array and then returns it.
     def listOfItemsToScan(self, path):
+        # In case the list of item was uploaded by a file
+        # Appends each read line of the file in an Array and then returns it.
         arr = []
         try:
             with open(path) as file:
