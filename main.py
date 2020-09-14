@@ -33,7 +33,7 @@ def run():
         repeat()
     # If user types CTRL + C takes an exception and exits the program
     except Exception as e:
-        print(e)
+        print(f'Error: {e}')
         run()
     except KeyboardInterrupt:
         print("\nExiting Program !!!!")

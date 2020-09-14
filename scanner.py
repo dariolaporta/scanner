@@ -14,10 +14,10 @@ import datetime
 class Scanner:
     def __init__(self, items, directory):
         self.items = items
+        self.directory = directory
         self.found_elements = []
         self.scanned_files = []
         self.path_file_found = ''
-        self.directory = directory
 
     def checkItemsLenght(self):
         # Check collected items lenght
