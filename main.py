@@ -13,8 +13,10 @@ def ascii_banner(banner):
     element = pyfiglet.figlet_format(banner)
     print(element)
 
-
+# Dev
 # It collects infos ( directory , items ) typed by the users and then check items lenght
+
+
 def run():
     try:
         is_mac_os = platform.platform().startswith('macOS')
