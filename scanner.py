@@ -16,20 +16,8 @@ class Scanner:
         self.items = items
         self.found_elements = []
         self.scanned_files = []
+        self.path_file_found = ''
         self.directory = directory
-
-    def ascii_banner(self, banner):
-        is_mac_os = platform.platform().startswith('macOS')
-        if is_mac_os == True:
-            element = pyfiglet.figlet_format(banner)
-            print(element)
-        else:
-            print('Completed !!!')
-
-    def get_random_string(self, length):
-        letters = string.ascii_lowercase
-        result_str = ''.join(random.choice(letters) for i in range(length))
-        return result_str
 
     def checkItemsLenght(self):
         # Check collected items lenght
@@ -58,41 +46,6 @@ class Scanner:
             print(e)
             self.checkItemsLenght()
 
-    def compose_response(self, item, num, path, line, name_dir, file_mv):
-        if file_mv == 'y':
-            a = path.split("/")
-            file_name = a[-1]
-            dest_path = f'./Reports/{name_dir}/{file_name}'
-            shutil.copyfile(path, dest_path)
-        print('-' * 100)
-        print('ELEMENT: ', item)
-        print('-' * 100)
-        print('')
-        print('FOUND AT LINE:', num, ',', 'FILE:', path)
-        print('')
-        print(line)
-
-    def get_year_time(self):
-        date = datetime.date.today()
-        time = datetime.datetime.now().strftime("%H:%M:%S")
-        date_conv = str(date)
-        time_conv = str(time)
-        a = date_conv.split('-')
-        b = time_conv.split(':')
-        return f'{"_".join(a)}_{"_".join(b)}'
-
-    def find_items(self, item, path, name_dir, file_mv, f):
-        with open(path) as myFile:
-            for num, line in enumerate(myFile, 1):
-                if item in line:
-                    self.found_elements.append(item)
-                    self.compose_response(
-                        item, num, path, line, name_dir, file_mv)
-                    f.write(line)
-                    f2 = open(f"report_backup.csv", "a")
-                    f2.write(line)
-                    f2.close()
-
     def scanItems(self, fileExtension, file_mv):
         # Scan collected items
         # Adding a nice banner
@@ -110,10 +63,10 @@ class Scanner:
                               fileExtension, recursive=True)
             f = open(f"./Reports/items_{self.get_year_time()}.csv", "a")
             for filename in files:
-                path = filename
-                self.scanned_files.append(path)
+                self.path_file_found = filename
+                self.scanned_files.append(self.path_file_found)
                 for item in self.items:
-                    self.find_items(item, path, name_dir, file_mv, f)
+                    self.find_items(item, name_dir, file_mv, f)
             f.close()
             self.ascii_banner("Completed")
             print('TOTAL ELEMENTS FOUND:', str(len(self.found_elements)))
@@ -121,15 +74,63 @@ class Scanner:
         except Exception as e:
             print("Operation Aborted: ", e)
 
-    def listOfItemsToScan(self, path):
+    def find_items(self, item, name_dir, file_mv, f):
+        with open(self.path_file_found) as myFile:
+            for num, line in enumerate(myFile, 1):
+                if item in line:
+                    self.found_elements.append(item)
+                    self.compose_response(
+                        item, num, self.path_file_found, line, name_dir, file_mv)
+                    f.write(line)
+                    f2 = open(f"report_backup.csv", "a")
+                    f2.write(line)
+                    f2.close()
+
+    def compose_response(self, item, num, path, line, name_dir, file_mv):
+        if file_mv == 'y':
+            a = self.path_file_found.split("/")
+            file_name = a[-1]
+            dest_path = f'./Reports/{name_dir}/{file_name}'
+            shutil.copyfile(self.path_file_found, dest_path)
+        print('-' * 100)
+        print('ELEMENT: ', item)
+        print('-' * 100)
+        print('')
+        print('FOUND AT LINE:', num, ',', 'FILE:', self.path_file_found)
+        print('')
+        print(line)
+
+    def get_year_time(self):
+        date = datetime.date.today()
+        time = datetime.datetime.now().strftime("%H:%M:%S")
+        date_conv = str(date)
+        time_conv = str(time)
+        a = date_conv.split('-')
+        b = time_conv.split(':')
+        return f'{"_".join(a)}_{"_".join(b)}'
+
+    def listOfItemsToScan(self, listOfItemsPath):
         # In case the list of item was uploaded by a file
         # Appends each read line of the file in an Array and then returns it.
         arr = []
         try:
-            with open(path) as file:
+            with open(listOfItemsPath) as file:
                 for row in file:
                     arr.append(row.strip())
             return arr
         except:
             print(
                 'file not found - please make sure you specified a correct file path')
+
+    def ascii_banner(self, banner):
+        is_mac_os = platform.platform().startswith('macOS')
+        if is_mac_os == True:
+            element = pyfiglet.figlet_format(banner)
+            print(element)
+        else:
+            print('Completed !!!')
+
+    def get_random_string(self, length):
+        letters = string.ascii_lowercase
+        result_str = ''.join(random.choice(letters) for i in range(length))
+        return result_str
