@@ -19,12 +19,8 @@ def ascii_banner(banner):
 
 def run():
     try:
-        is_mac_os = platform.platform().startswith('macOS')
-        if is_mac_os == True:
-            os.system('clear')
-            ascii_banner("File -  Scanner")
-        else:
-            os.system('cls')
+        os.system('clear')
+        ascii_banner("File -  Scanner")
         directory_path = input("Enter directory path of the files to scan *: ")
         existing_path = path.exists(directory_path)
         if existing_path == False:

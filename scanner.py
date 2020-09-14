@@ -123,12 +123,8 @@ class Scanner:
                 'file not found - please make sure you specified a correct file path')
 
     def ascii_banner(self, banner):
-        is_mac_os = platform.platform().startswith('macOS')
-        if is_mac_os == True:
-            element = pyfiglet.figlet_format(banner)
-            print(element)
-        else:
-            print('Completed !!!')
+        element = pyfiglet.figlet_format(banner)
+        print(element)
 
     def get_random_string(self, length):
         letters = string.ascii_lowercase
