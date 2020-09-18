@@ -14,10 +14,10 @@ import datetime
 class Scanner:
     def __init__(self, items, directory):
         self.items = items
+        self.directory = directory
         self.found_elements = []
         self.scanned_files = []
         self.path_file_found = ''
-        self.directory = directory
 
     def checkItemsLenght(self):
         # Check collected items lenght
@@ -65,6 +65,7 @@ class Scanner:
             for filename in files:
                 self.path_file_found = filename
                 self.scanned_files.append(self.path_file_found)
+                # TODO: try to replace the below code with a map(lambda p: myFunc(p, additionalArgument), pages)
                 for item in self.items:
                     self.find_items(item, name_dir, file_mv, f)
             f.close()
@@ -123,12 +124,8 @@ class Scanner:
                 'file not found - please make sure you specified a correct file path')
 
     def ascii_banner(self, banner):
-        is_mac_os = platform.platform().startswith('macOS')
-        if is_mac_os == True:
-            element = pyfiglet.figlet_format(banner)
-            print(element)
-        else:
-            print('Completed !!!')
+        element = pyfiglet.figlet_format(banner)
+        print(element)
 
     def get_random_string(self, length):
         letters = string.ascii_lowercase
