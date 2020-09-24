@@ -9,6 +9,8 @@ import shutil
 import random
 import string
 import datetime
+import utils
+translations = utils.get_translations()
 
 
 class Scanner:
@@ -25,22 +27,18 @@ class Scanner:
         # If the opposite occours , the list was uploaded from a file
         try:
             if len(self.items) > 0:
-                fileExtension = input(
-                    "Filter scanning by file extension (eg: .txt): ")
+                fileExtension = input(translations["EXTENSION"])
             else:
-                listOfItemsPath = input(
-                    "Enter a path of a file with a list of elements you want to search*: ")
+                listOfItemsPath = input(translations["ENTER_PATH"])
                 existing_path = path.exists(listOfItemsPath)
                 if existing_path == False:
-                    raise Exception("Path not valid")
-                fileExtension = input(
-                    "Choose the format of the files to scan (eg: .txt, .csv ...)*: ")
+                    raise Exception(translations["NOT_VALID_PATH"])
+                fileExtension = input(translations["FORMAT"])
                 if fileExtension.lower().endswith(('.txt', '.csv')) == False:
-                    raise Exception("Not a valid extension")
+                    raise Exception(translations["NOT_VALID_EXTENSION"])
                 self.items = self.listOfItemsToScan(listOfItemsPath)
-
-            file_mv = input(
-                "Would you like to move scanned files in an internal directory? (y/n): ")
+            # Scan Items
+            file_mv = input(translations["MOVE_FILE"])
             self.scanItems(fileExtension, file_mv)
         except Exception as e:
             print(e)
@@ -53,7 +51,7 @@ class Scanner:
             pass
         self.get_year_time()
         print('')
-        print('SCANNING FILES ... Please wait')
+        print(translations["SCANNING_WAIT"])
         print('')
         name_dir = f'report_{datetime.datetime.now()}_{self.get_random_string(8)}'
         if file_mv == 'y':
@@ -70,14 +68,15 @@ class Scanner:
                     self.find_items(item, name_dir, file_mv, f)
             f.close()
             self.ascii_banner("Completed")
-            print('TOTAL ELEMENTS FOUND:', str(len(self.found_elements)))
-            print('TOTAL FILES SCANNED:', str(len(self.scanned_files)))
+            print(translations["FOUND"], str(len(self.found_elements)))
+            print(translations["SCANNED"], str(len(self.scanned_files)))
         except Exception as e:
-            print("Operation Aborted: ", e)
+            print(translations["ABORTED_OPERATION"], e)
 
     def find_items(self, item, name_dir, file_mv, f):
         with open(self.path_file_found) as myFile:
             for num, line in enumerate(myFile, 1):
+                # if item in line and self.path_file_found.endswith('success.csv'):
                 if item in line:
                     self.found_elements.append(item)
                     self.compose_response(
@@ -120,8 +119,7 @@ class Scanner:
                     arr.append(row.strip())
             return arr
         except:
-            print(
-                'file not found - please make sure you specified a correct file path')
+            print(translations["FILE_NOT_FOUND"])
 
     def ascii_banner(self, banner):
         element = pyfiglet.figlet_format(banner)
