@@ -14,5 +14,6 @@
     "ITEMS_TO_SEARCH": "Enter items to search (eg: Hello world! , or press ENTER if you want to skip): ",
     "EXIT": "\nExiting Program !!!!",
     "REPEAT": "REPEAT OPERATION ? y/n ",
-    "TERMINATED_PROCESS": "Process terminated"
+    "TERMINATED_PROCESS": "Process terminated",
+    "VIEW_RESULT": "To view the report check out /PyScan/search_result.csv & /PyScan/report.csv"
 }
