@@ -7,26 +7,24 @@ import sys
 from scanner import Scanner
 import pyfiglet
 import platform
+import utils
+translations = utils.get_translations()
 
 
 def ascii_banner(banner):
     element = pyfiglet.figlet_format(banner)
     print(element)
 
-# Dev
-# It collects infos ( directory , items ) typed by the users and then check items lenght
-
 
 def run():
     try:
         os.system('clear')
         ascii_banner("File -  Scanner")
-        directory_path = input("Enter directory path of the files to scan *: ")
+        directory_path = input(translations['DIRECTORY'])
         existing_path = path.exists(directory_path)
         if existing_path == False:
-            raise Exception("Path not valid")
-        itemsManuallyInsert = input(
-            "Enter items to search (eg: Hello world! , or press ENTER if you want to skip): ")
+            raise Exception(translations["NOT_VALID_PATH"])
+        itemsManuallyInsert = input(translations["ITEMS_TO_SEARCH"])
         itemsList = itemsManuallyInsert.split()
         _scan = Scanner(itemsList, directory_path)
         _scan.checkItemsLenght()
@@ -36,18 +34,18 @@ def run():
         print(f'Error: {e}')
         run()
     except KeyboardInterrupt:
-        print("\nExiting Program !!!!")
+        print(translations["EXIT"])
         sys.exit()
 
 
 # Asks the user to repeat operation or not
 def repeat():
     print('')
-    repeatOp = input("REPEAT OPERATION ? y/n ")
+    repeatOp = input(translations["REPEAT"])
     if repeatOp == 'y':
         run()
     else:
-        print('Process terminated')
+        print(translations["TERMINATED_PROCESS"])
 
 
 if __name__ == '__main__':

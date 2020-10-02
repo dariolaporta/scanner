@@ -1,0 +1,19 @@
+{
+    "EXTENSION": "Filter scanning by file extension (eg: .txt): ",
+    "ENTER_PATH": "Enter a path of a file with a list of elements you want to search*: ",
+    "NOT_VALID_PATH": "Path not valid",
+    "FORMAT": "Choose the format of the files to scan (eg: .txt, .csv ...)*: ",
+    "NOT_VALID_EXTENSION": "Not a valid extension",
+    "MOVE_FILE": "Would you like to move scanned files in an internal directory? (y/n): ",
+    "SCANNING_WAIT": "SCANNING FILES ... Please wait",
+    "FOUND": "TOTAL ELEMENTS FOUND:",
+    "SCANNED": "TOTAL FILES SCANNED:",
+    "ABORTED_OPERATION": "Operation Aborted: ",
+    "FILE_NOT_FOUND": "file not found - please make sure you specified a correct file path",
+    "DIRECTORY": "Enter directory path of the files to scan *: ",
+    "ITEMS_TO_SEARCH": "Enter items to search (eg: Hello world! , or press ENTER if you want to skip): ",
+    "EXIT": "\nExiting Program !!!!",
+    "REPEAT": "REPEAT OPERATION ? y/n ",
+    "TERMINATED_PROCESS": "Process terminated",
+    "VIEW_RESULT": "To view the report check out /PyScan/search_result.csv & /PyScan/report.csv"
+}
